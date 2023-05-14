@@ -1,1 +1,7 @@
+server.port: 8086
 
+product:
+  services:
+    external-product-url: ${PRODUCTS_URL:https://www.adidas.co.uk/api/products}
+    review-service-url: ${REVIEWS_URL:http://localhost:8085/api/reviews}
+    review-service-token: ${SERVICE_TOKEN:yA5hHLcNxXa71f7a9751ff7db0fae8464d5653ea5b7081590f}
