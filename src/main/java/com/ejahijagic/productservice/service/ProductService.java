@@ -3,6 +3,9 @@ package com.ejahijagic.productservice.service;
 import com.ejahijagic.productservice.client.ProductClient;
 import com.ejahijagic.productservice.exceptions.ProductException;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -25,9 +28,19 @@ public class ProductService {
 
         CompletableFuture.allOf(product, review).join();
 
-        result.put("product", product.join());
-        result.put("review", review.join());
+        try {
+            result.put("product", parse(product.join()));
+            result.put("review", parse(review.join()));
+        } catch (ParseException e) {
+            throw new ProductException("Error parsing product response as JSON");
+        }
+
 
         return result;
+    }
+
+    private JSONObject parse(String json) throws ParseException {
+        JSONParser parser = new JSONParser();
+        return (JSONObject) parser.parse(json);
     }
 }
